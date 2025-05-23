@@ -116,7 +116,9 @@ class GoogleSheetsConnector {
         console.log(`Expanding range to ensure all columns are fetched: ${fullRange}`);
       }
       
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${fullRange}`;
+      // Encode the range to safely handle sheet names with spaces or special characters
+      const encodedRange = encodeURIComponent(fullRange);
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodedRange}`;
       
       console.log(`Fetching sheet data: ${spreadsheetId} - ${fullRange}`);
       
