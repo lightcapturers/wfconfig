@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel Configurator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="select-vehicle">
+            <h3>SELECT YOUR VEHICLE</h3>
+            <div class="vehicle-selectors">
+                <div class="selector">
+                    <select id="year">
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                <div class="selector">
+                    <select id="make">
+                        <option value="SUBARU">SUBARU</option>
+                    </select>
+                </div>
+                <div class="selector">
+                    <select id="model">
+                        <option value="WRX">WRX</option>
+                    </select>
+                </div>
+                <div class="action-buttons">
+                    <button id="apply-btn" class="apply-btn">APPLY</button>
+                    <button id="change-btn" class="change-btn">CHANGE</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="vehicle-title">
+            <h2 id="vehicle-title">2024 SUBARU WRX</h2>
+        </div>
+
+        <main>
+            <div class="config-panel">
+                <div class="brand-section">
+                    <div class="brand-logo">
+                        <img src="https://cdn.shopify.com/s/files/1/0728/8720/6127/files/Untitled_design_22.png?v=1747787731" alt="W+1 Chrome Factory" class="w1-logo">
+                    </div>
+                </div>
+
+                <div class="wheel-section">
+                    <h3>Choose a Wheel Model</h3>
+                    <div class="wheel-container">
+                        <div class="wheel-grid" id="wheel-grid">
+                            <!-- Wheel options will be loaded here dynamically -->
+                        </div>
+                        <div class="pagination-controls">
+                            <button id="prev-page" class="pagination-btn" aria-label="Previous page">&#10094;</button>
+                            <div id="current-page" class="page-dots">
+                                <!-- Page dots will be added dynamically -->
+                            </div>
+                            <button id="next-page" class="pagination-btn" aria-label="Next page">&#10095;</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="preview-panel">
+                <div class="vehicle-preview">
+                    <img id="vehicle-image" src="" alt="Vehicle Preview" 
+                         onerror="this.onerror=null; this.classList.add('error'); this.src='';" 
+                         onload="this.classList.remove('error');" 
+                         class="vehicle-image">
+                    <div class="wheel-overlay">
+                        <img id="wheel-overlay-image" src="" alt="Wheel Overlay" crossorigin="anonymous"
+                             onerror="this.onerror=null; this.src=''; this.classList.add('error'); console.error('Failed to load wheel overlay image');"
+                             onload="this.classList.remove('error');">
+                    </div>
+                </div>
+
+                <div class="paint-section mt-6 p-4 bg-gray-50 rounded-lg shadow">
+                    <button class="paint-section-toggle" id="paint-toggle" aria-label="Toggle paint section"></button>
+                    <h3 class="text-sm font-medium text-gray-900 mb-3">PAINT</h3>
+                    <div class="paint-swatches flex flex-wrap gap-2 justify-center" id="paint-swatches">
+                        <!-- Paint swatches will be loaded here dynamically -->
+                        <!-- Example swatch structure (for styling reference):
+                        <button class="w-8 h-8 rounded-full border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="background-color: #ff0000;"></button>
+                        -->
+                    </div>
+                    <div class="paint-name mt-4 text-center">
+                        <p class="text-sm text-gray-600">Paint: <span id="paint-display" class="font-semibold text-gray-800">Ignition red</span></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Original scripts -->
+    <script src="csv-parser.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Google Sheets integration -->
+    <script src="sheets-config.js"></script>
+    <script src="google-sheets-api.js"></script>
+    <script src="admin-panel.js"></script>
+    <script src="loading-page.js"></script>
+    
+    <!-- Mobile enhancements script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only run on mobile devices
+            if (window.innerWidth < 768) {
+                // Setup paint section toggle
+                const paintToggle = document.getElementById('paint-toggle');
+                const paintSection = document.querySelector('.paint-section');
+                
+                if (paintToggle && paintSection) {
+                    paintToggle.addEventListener('click', function() {
+                        paintSection.classList.toggle('collapsed');
+                    });
+                }
+                
+                // Adjust items per page for pagination on mobile
+                // This will override the default in state.pagination.itemsPerPage
+                if (window.WHEELS_DATA && window.state) {
+                    // For 3-column layout, set to 6 items per page (2 rows)
+                    window.state.pagination.itemsPerPage = 6;
+                    
+                    // If the loadWheelModels function exists, refresh the wheel display
+                    if (typeof loadWheelModels === 'function') {
+                        setTimeout(() => {
+                            loadWheelModels();
+                        }, 500); // Small delay to ensure other initialization is complete
+                    }
+                }
+            }
+        });
+    </script>
+    
+    <!-- Initialize Google Sheets integration -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Flag to track if the app has been initialized
+            if (window.appInitialized) {
+                return; // Prevent multiple initializations
+            }
+            
+            // Make the main container initially hidden until loading is complete
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.display = 'none';
+            }
+            
+            // Patch the script.js loading to handle compressed data
+            function patchScriptDataLoading() {
+                // Check if we need to decompress vehicle data
+                if (localStorage.getItem('vehicleData_isCompressed') === 'true') {
+                    const compressedData = localStorage.getItem('vehicleData_compressed');
+                    if (compressedData && typeof LZString !== 'undefined') {
+                        try {
+                            const decompressed = JSON.parse(LZString.decompressFromUTF16(compressedData));
+                            window.VEHICLES_DATA = decompressed;
+                            console.log('Decompressed vehicle data loaded:', decompressed.length, 'items');
+                        } catch (e) {
+                            console.error('Error decompressing vehicle data:', e);
+                        }
+                    }
+                }
+                
+                // Check if we need to decompress wheel data
+                if (localStorage.getItem('wheelData_isCompressed') === 'true') {
+                    const compressedData = localStorage.getItem('wheelData_compressed');
+                    if (compressedData && typeof LZString !== 'undefined') {
+                        try {
+                            const decompressed = JSON.parse(LZString.decompressFromUTF16(compressedData));
+                            window.WHEELS_DATA = decompressed;
+                            console.log('Decompressed wheel data loaded:', decompressed.length, 'items');
+                        } catch (e) {
+                            console.error('Error decompressing wheel data:', e);
+                        }
+                    }
+                }
+            }
+            
+            // Call the patch before script.js fully initializes
+            patchScriptDataLoading();
+            
+            // Check if we should show the loading page or directly initialize the app
+            const hasRefreshedData = localStorage.getItem('lastDataRefresh');
+            const refreshAge = hasRefreshedData ? (Date.now() - parseInt(hasRefreshedData)) : null;
+            
+            // If data exists and is less than 24 hours old, we can directly initialize
+            const MAX_DATA_AGE = 24 * 60 * 60 * 1000; // 24 hours
+            if (hasRefreshedData && refreshAge < MAX_DATA_AGE && (window.VEHICLES_DATA || window.WHEELS_DATA)) {
+                console.log('Using cached data that is still fresh');
+                
+                // Show the main container
+                if (container) {
+                    container.style.display = 'block';
+                }
+                
+                // Skip loading page and initialize app directly
+                if (window.init && !window.state?.isLoading) {
+                    window.init();
+                    window.appInitialized = true; // Mark as initialized
+                }
+                
+                // Fetch credentials in the background for periodic refreshes
+                initializeGoogleSheets(false);
+            } else {
+                // We need to show the loading page and initialize from scratch
+                initializeGoogleSheets(true);
+            }
+            
+            // Function to initialize Google Sheets
+            function initializeGoogleSheets(showLoadingPage) {
+                // Fetch credentials.json (in production, this would be handled by the server)
+                fetch('credentials.json')
+                    .then(response => response.json())
+                    .then(credentials => {
+                        // Initialize Google Sheets connector
+                        window.sheetsConnector = new GoogleSheetsConnector(credentials, SHEETS_CONFIG);
+                        
+                        if (showLoadingPage && !window.appInitialized) {
+                            // Create and show loading page only if not already initialized
+                            if (!window.loadingPage) { // Only create if it doesn't exist
+                                window.loadingPage = new LoadingPage(window.sheetsConnector);
+                                window.loadingPage.createLoadingUI();
+                            }
+                        } else {
+                            // Show the container if it's not already visible
+                            if (container && container.style.display === 'none') {
+                                container.style.display = 'block';
+                            }
+                            
+                            // Initialize app if not already done
+                            if (!window.appInitialized && window.init && !window.state?.isLoading) {
+                                window.init();
+                                window.appInitialized = true; // Mark as initialized
+                            }
+                        }
+                        
+                        // Initialize admin panel in the background for auto-refresh
+                        if (!window.adminPanel) { // Only create if it doesn't exist
+                            window.adminPanel = new AdminPanel(window.sheetsConnector);
+                            // Set up auto-refresh if configured
+                            if (SHEETS_CONFIG.autoRefreshInterval > 0) {
+                                window.adminPanel.setupAutoRefresh(SHEETS_CONFIG.autoRefreshInterval);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error initializing Google Sheets integration:', error);
+                        
+                        // Show error in loading page if it exists
+                        if (window.loadingPage) {
+                            window.loadingPage.setStatus('Error connecting to data source. Please try again.', 'error');
+                        } else {
+                            // Show the main container as fallback
+                            if (container) {
+                                container.style.display = 'block';
+                            }
+                            // Add a visible error message
+                            const errorMsg = document.createElement('div');
+                            errorMsg.style.cssText = 'position:fixed;top:10px;right:10px;background:rgba(255,0,0,0.7);color:white;padding:10px;border-radius:5px;z-index:9999;';
+                            errorMsg.textContent = 'Error connecting to data source. Data may be outdated.';
+                            document.body.appendChild(errorMsg);
+                        }
+                    });
+            }
+        });
+    </script>
+</body>
+</html> 

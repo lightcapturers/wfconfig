@@ -1,0 +1,1004 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px 30px 0 30px;
+    flex: 1;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logo {
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.copyright {
+    font-size: 12px;
+    max-width: 500px;
+    text-align: right;
+    opacity: 0.7;
+}
+
+/* Vehicle selection styles */
+.select-vehicle h3 {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.vehicle-selectors {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.selector {
+    position: relative;
+}
+
+.selector select {
+    width: 220px;
+    padding: 12px 30px 12px 12px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    font-size: 14px;
+    text-align: center;
+    appearance: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    text-overflow: ellipsis;
+}
+
+/* Make the model select wider to accommodate longer text */
+#model {
+    width: 280px;
+}
+
+/* Fix dropdown positioning */
+select {
+    -webkit-appearance: menulist-button;
+    position: relative;
+}
+
+select option {
+    position: relative;
+    z-index: 100;
+}
+
+.selector::after {
+    content: "▼";
+    font-size: 10px;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+}
+
+.action-buttons {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.apply-btn {
+    background-color: #A90616;
+    color: #fff;
+}
+
+.apply-btn:hover {
+    background-color: #8a0512;
+    box-shadow: 0 3px 8px rgba(169, 6, 22, 0.3);
+}
+
+.change-btn {
+    background-color: transparent;
+    border: 1px solid #A90616;
+    color: #A90616;
+}
+
+.change-btn:hover {
+    background-color: rgba(169, 6, 22, 0.1);
+}
+
+/* Vehicle title */
+.vehicle-title {
+    margin-bottom: 20px;
+}
+
+.vehicle-title h2 {
+    font-size: 30px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+/* Main content */
+main {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 0;
+}
+
+/* Config panel */
+.config-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background-color: #fff;
+    color: #000;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.brand-section h3,
+.wheel-section h3,
+.finish-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+/* Desktop enhancements for wheel grid */
+@media (min-width: 768px) {
+    .wheel-section h3 {
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .wheel-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .wheel-grid {
+        gap: 25px;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .wheel-option {
+        padding: 20px;
+        transition: all 0.25s ease;
+    }
+    
+    .wheel-option img {
+        max-width: 120px;
+        margin-bottom: 12px;
+    }
+    
+    .wheel-model-name {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+}
+
+.brand-section {
+    margin-bottom: 0;
+}
+
+.brand-section .selector {
+    width: 100%;
+}
+
+.brand-section .selector select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Wheel grid container with pagination */
+.wheel-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.wheel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Dynamic wheel grid layouts */
+.wheel-grid-compact {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 300px;
+    justify-content: start;
+}
+
+.wheel-grid-row-1 {
+    grid-template-rows: repeat(1, auto);
+    margin-bottom: 15px;
+    justify-content: start;
+}
+
+.wheel-grid-row-2 {
+    grid-template-rows: repeat(2, auto);
+    margin-bottom: 10px;
+}
+
+.wheel-grid-row-3 {
+    grid-template-rows: repeat(3, auto);
+    margin-bottom: 5px;
+}
+
+.wheel-grid-row-4 {
+    grid-template-rows: repeat(4, auto);
+}
+
+/* Pagination styles */
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.pagination-btn {
+    background: transparent;
+    color: #555;
+    border: none;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Create dot-style indicators */
+#current-page {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Style for page dots */
+.page-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.page-dot.active {
+    background-color: #000;
+    transform: scale(1.2);
+}
+
+.wheel-option {
+    border: 2px solid transparent;
+    padding: 15px;
+    cursor: pointer;
+    text-align: center;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wheel-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: #f2f2f2;
+}
+
+.wheel-option.selected {
+    border-color: #000;
+    background-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.wheel-option img {
+    width: 100%;
+    max-width: 75px;
+    height: auto;
+    margin: 0 auto 8px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.wheel-option:hover img {
+    transform: scale(1.05);
+}
+
+.wheel-model-name {
+    margin-top: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+    color: #333;
+}
+
+.wheel-option.placeholder {
+    cursor: default;
+    border-color: transparent !important;
+    background-color: transparent;
+    opacity: 0.3;
+    box-shadow: none;
+}
+
+.wheel-option.placeholder:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.empty-wheel {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 8px;
+    background-color: #e5e5e5;
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+/* Finish section */
+.finish-section {
+    margin-top: 15px;
+}
+
+.finish-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.finish-swatch {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.finish-swatch:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.finish-swatch.selected {
+    border-color: #000;
+    border-width: 2px;
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.finish-name {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Preview panel */
+.preview-panel {
+    background-color: #E5E5E5;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.vehicle-preview {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#vehicle-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.wheel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#wheel-overlay-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: normal;
+}
+
+/* Create two wheel instances for left and right sides */
+.wheel-left,
+.wheel-right {
+    position: absolute;
+    width: 23%;
+    height: auto;
+    bottom: 22%;
+    transform-origin: center;
+}
+
+.wheel-left {
+    left: 18%;
+    transform: translateX(-50%);
+}
+
+.wheel-right {
+    right: 22%;
+    transform: translateX(50%);
+}
+
+/* Add shadow effect to wheels */
+.wheel-left img,
+.wheel-right img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 5px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Paint section */
+.paint-section {
+    background-color: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    margin-top: 20px;
+}
+
+.paint-section h3 {
+    color: #000;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+/* Target the actual flex container with utility classes */
+#paint-swatches, 
+.paint-swatches.flex.flex-wrap {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.75rem !important; /* 12px */
+    justify-content: center !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin-bottom: 15px;
+}
+
+/* Target the button elements directly */
+#paint-swatches button,
+.paint-swatches button {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    border: 2px solid transparent !important;
+    position: relative !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+#paint-swatches button:hover,
+.paint-swatches button:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+}
+
+#paint-swatches button.selected,
+.paint-swatches button.selected {
+    transform: scale(1.2) !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2) !important;
+    border: 2px solid #fff !important;
+    z-index: 2 !important;
+}
+
+#paint-swatches button.selected::after,
+.paint-swatches button.selected::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 6px !important;
+    height: 6px !important;
+    background-color: #000 !important;
+    border-radius: 50% !important;
+}
+
+.paint-name {
+    color: #000;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+/* Paint section - desktop specific changes */
+.paint-section.mt-6.p-4.bg-gray-50.rounded-lg.shadow {
+    background-color: transparent !important;
+    padding: 10px 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin-top: 0 !important;
+    position: static !important; /* Remove absolute positioning */
+}
+
+/* Hide the Paint heading for desktop */
+.paint-section h3,
+.text-sm.font-medium.text-gray-900.mb-3 {
+    display: none !important;
+}
+
+/* Paint pagination controls */
+.paint-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.paint-pagination-btn {
+    background: transparent;
+    color: #000;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    transition: all 0.2s ease;
+}
+
+.paint-pagination-btn:hover {
+    color: #555;
+}
+
+.paint-pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+    
+    .vehicle-selectors {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .selector select {
+        width: 150px;
+    }
+    
+    .action-buttons {
+        margin: 10px 0 0 0;
+    }
+    
+    .wheel-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    
+    .wheel-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 250px;
+    }
+    
+    .pagination-controls {
+        margin-top: 15px;
+    }
+
+    .config-panel {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .copyright {
+        display: none;
+    }
+    
+    .wheel-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wheel-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .wheel-grid-compact {
+        max-width: 180px;
+    }
+    
+    .pagination-controls {
+        gap: 15px;
+    }
+
+    .wheel-option {
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .wheel-option img {
+        max-width: 60px;
+    }
+
+    .wheel-model-name {
+        font-size: 10px;
+    }
+
+    .config-panel {
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .finish-swatches {
+        gap: 10px;
+    }
+
+    .finish-swatch {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .paint-swatches {
+        gap: 10px;
+    }
+    
+    .paint-swatch {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .paint-swatch.selected {
+        width: 38px;
+        height: 38px;
+    }
+    
+    .paint-name {
+        font-size: 12px;
+        padding: 6px;
+        max-width: 95%;
+    }
+
+    .brand-section h3,
+    .wheel-section h3,
+    .finish-section h3 {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    .wheel-grid {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 12px;
+    }
+    
+    .wheel-grid-compact {
+        grid-template-columns: repeat(1, 1fr);
+        max-width: 160px;
+    }
+
+    .wheel-option img {
+        max-width: 70px;
+    }
+}
+
+/* Loading animation and states */
+.component-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    border-top: 4px solid #40B4B4;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Image blur during loading */
+.loading-blur {
+    filter: blur(2px);
+    transition: filter 0.3s ease;
+}
+
+/* Wheel overlay image transitions */
+#wheel-overlay-image {
+    transition: opacity 0.3s ease;
+}
+
+/* Vehicle preview modifications */
+.vehicle-preview {
+    position: relative;
+    background-color: #E5E5E5;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 300px;
+    transition: all 0.3s ease;
+}
+
+/* Prevent the broken image icon from showing */
+img {
+    transition: opacity 0.2s ease;
+}
+img[src=""], img:not([src]) {
+    opacity: 0;
+}
+
+/* Style updates for the Apply and Change buttons for better visual feedback */
+.apply-btn, .change-btn {
+    transition: all 0.2s ease;
+}
+
+.apply-btn:hover {
+    background-color: #8a0512;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.apply-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Pagination improvements */
+.page-dot {
+    transition: all 0.2s ease;
+}
+
+.page-dot:hover {
+    transform: scale(1.2);
+}
+
+/* Image error state */
+img.error {
+    display: none;
+}
+
+/* Brand select styling */
+.brand-select-styled {
+    width: 100% !important;
+    box-sizing: border-box;
+    background-color: #f5f5f5 !important;
+    color: #333 !important;
+    padding: 15px !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+    border: none !important;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.brand-select-styled:hover {
+    background-color: #eaeaea !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* W+1 Logo styling */
+.brand-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 20px 0;
+}
+
+.w1-logo {
+    max-width: 220px;
+    width: 100%;
+    height: auto;
+}
+
+.wheel-option.placeholder {
+    cursor: default;
+    border-color: transparent !important;
+}
+
+/* Target specific classes seen in the developer tools screenshot */
+.paint-swatches.flex.flex-wrap.gap-2.justify-center {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.75rem !important; /* Slightly larger than gap-2 */
+    justify-content: center !important;
+    background-color: transparent !important;
+    margin-bottom: 15px !important;
+    padding: 0 !important;
+}
+
+[data-color] {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    border: 2px solid transparent !important;
+    position: relative !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+[data-color]:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-color].selected {
+    transform: scale(1.2) !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2) !important;
+    border: 2px solid #fff !important;
+    z-index: 2 !important;
+}
+
+[data-color].selected::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 6px !important;
+    height: 6px !important;
+    background-color: #000 !important;
+    border-radius: 50% !important;
+}
+
+.text-sm.font-medium.text-gray-900.mb-3 {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    margin-bottom: 15px !important;
+    text-align: center !important;
+}
+
+/* Make swatches smaller on desktop */
+@media (min-width: 768px) {
+    [data-color] {
+        width: 25px !important;
+        height: 25px !important;
+    }
+    
+    .paint-swatches.flex.flex-wrap.gap-2.justify-center {
+        gap: 10px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .paint-name {
+        margin-top: 2px !important;
+    }
+} 

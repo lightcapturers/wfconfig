@@ -1,0 +1,21 @@
+{
+  "name": "wheel-configurator",
+  "version": "1.0.0",
+  "description": "Wheel Configurator App with Google Sheets Integration",
+  "main": "token-server.js",
+  "scripts": {
+    "start": "node token-server.js",
+    "dev": "nodemon token-server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "google-auth-library": "^9.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

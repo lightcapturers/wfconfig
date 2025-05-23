@@ -1,0 +1,145 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Set up the frontend according to the following prompt:
+  <frontend-prompt>
+  Create detailed components with these requirements:
+  1. Use 'use client' directive for client-side components
+  2. Make sure to concatenate strings correctly using backslash
+  3. Style with Tailwind CSS utility classes for responsive design
+  4. Use Lucide React for icons (from lucide-react package). Do NOT use other UI libraries unless requested
+  5. Use stock photos from picsum.photos where appropriate, only valid URLs you know exist
+  6. Configure next.config.js image remotePatterns to enable stock photos from picsum.photos
+  7. Create root layout.tsx page that wraps necessary navigation items to all pages
+  8. MUST implement the navigation elements items in their rightful place i.e. Left sidebar, Top header
+  9. Accurately implement necessary grid layouts
+  10. Follow proper import practices:
+     - Use @/ path aliases
+     - Keep component imports organized
+     - Update current src/app/page.tsx with new comprehensive code
+     - Don't forget root route (page.tsx) handling
+     - You MUST complete the entire prompt before stopping
+  </frontend-prompt>
+
+  <summary_title>
+Vehicle Wheel Configurator Interface for Subaru WRX
+</summary_title>
+
+<image_analysis>
+1. Navigation Elements:
+- Primary navigation: SELECT YOUR VEHICLE, SELECT BRAND, SELECT WHEEL MODEL, SELECT FINISH
+- Logo: "CONFIGURATOR" in large white text at top-left
+- Copyright notice aligned right in header
+- Action buttons: "APPLY" and "CHANGE" in top-right (teal/dark styling)
+- Selection indicators showing current progress through configuration
+
+2. Layout Components:
+- Header section: ~80px height, full width
+- Main content split into two columns:
+  - Left: Configuration controls (40% width)
+  - Right: Vehicle preview (60% width)
+- Vertical spacing between sections: 24px
+- Container padding: 32px
+
+3. Content Sections:
+- Vehicle selector dropdowns (2024, SUBARU, WRX)
+- Wheel model selection grid (4 options displayed)
+- Finish selection swatches
+- Vehicle preview with dynamic wheel rendering
+- Paint color selection swatches
+- Model identification: "2024 SUBARU WRX"
+
+4. Interactive Controls:
+- Dropdown selectors for vehicle configuration
+- Wheel model thumbnails (clickable grid)
+- Color swatches for finish selection
+- Paint color selection interface
+- Apply/Change action buttons
+- Active state indicators for selected options
+
+5. Colors:
+- Primary: #000000 (Background)
+- Secondary: #FFFFFF (Text/UI elements)
+- Accent: #40B4B4 (Action buttons)
+- Selected state: #FFFFFF (Borders)
+- Vehicle preview background: #E5E5E5
+
+6. Grid/Layout Structure:
+- 12-column grid system
+- Wheel selection grid: 2x2
+- Color swatch grid: Single row
+- Responsive breakpoints at 768px, 1024px, 1440px
+</image_analysis>
+
+<development_planning>
+1. Project Structure:
+```
+src/
+├── components/
+│   ├── layout/
+│   │   ├── Header.tsx
+│   │   ├── ConfigPanel.tsx
+│   │   └── PreviewPanel.tsx
+│   ├── features/
+│   │   ├── VehicleSelector/
+│   │   ├── WheelSelector/
+│   │   ├── FinishSelector/
+│   │   └── ColorSelector/
+│   └── shared/
+├── assets/
+├── styles/
+├── hooks/
+└── utils/
+```
+
+2. Key Features:
+- Dynamic wheel configuration
+- Real-time preview rendering
+- Color/finish selection system
+- Vehicle model management
+- Configuration state persistence
+- Export/share functionality
+
+3. State Management:
+```typescript
+interface ConfigState {
+  vehicle: {
+    year: string;
+    make: string;
+    model: string;
+  };
+  wheel: {
+    brand: string;
+    model: string;
+    finish: string;
+  };
+  paint: {
+    color: string;
+    code: string;
+  };
+}
+```
+
+4. Component Architecture:
+- ConfiguratorApp (root)
+  - Header
+  - ConfigurationPanel
+    - VehicleSelector
+    - WheelSelector
+    - FinishSelector
+  - PreviewPanel
+    - VehiclePreview
+    - ColorSelector
+
+5. Responsive Breakpoints:
+```scss
+$breakpoints: (
+  'mobile': 320px,
+  'tablet': 768px,
+  'desktop': 1024px,
+  'wide': 1440px
+);
+```
+</development_planning>

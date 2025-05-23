@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel Configurator - Data Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        
+        .upload-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .file-input {
+            margin: 15px 0;
+        }
+        
+        button {
+            background-color: #40B4B4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background-color: #2a9494;
+        }
+        
+        button.danger {
+            background-color: #e74c3c;
+        }
+        
+        button.danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow: auto;
+        }
+        
+        .result pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        
+        .start-configurator {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .start-configurator a {
+            display: inline-block;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .start-configurator a:hover {
+            background-color: #555;
+        }
+        
+        .actions {
+            display: flex;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wheel Configurator - Data Management</h1>
+    
+    <div class="upload-section">
+        <h2>Upload Vehicle Data</h2>
+        <p>Select the CSV file containing vehicle data (Make, Model, Color, Image).</p>
+        
+        <div class="file-input">
+            <input type="file" id="vehicleFileInput" accept=".csv">
+        </div>
+        
+        <div class="actions">
+            <button id="processVehicleBtn">Process Vehicle Data</button>
+            <button id="clearVehicleBtn" class="danger">Clear Vehicle Data</button>
+        </div>
+        
+        <div class="result" id="vehicleResult">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="upload-section">
+        <h2>Upload Wheel Data</h2>
+        <p>Select the CSV file containing wheel data (Brand, Model, Finish, Wheel Image, etc).</p>
+        
+        <div class="file-input">
+            <input type="file" id="wheelFileInput" accept=".csv">
+        </div>
+        
+        <div class="actions">
+            <button id="processWheelBtn">Process Wheel Data</button>
+            <button id="clearWheelBtn" class="danger">Clear Wheel Data</button>
+        </div>
+        
+        <div class="result" id="wheelResult">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="upload-section">
+        <h2>Manage Configuration</h2>
+        <p>Reset all data or clear last saved configuration.</p>
+        
+        <div class="actions">
+            <button id="clearAllBtn" class="danger">Clear All Data</button>
+            <button id="clearConfigBtn" class="danger">Clear Last Configuration</button>
+        </div>
+        
+        <div class="result" id="configResult">
+            <pre>Use these buttons to reset data if you encounter issues.</pre>
+        </div>
+    </div>
+    
+    <div class="start-configurator">
+        <a href="index.html">Start Wheel Configurator</a>
+    </div>
+    
+    <script src="csv-parser.js"></script>
+    <script>
+        // Process vehicle data
+        document.getElementById('processVehicleBtn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('vehicleFileInput');
+            const resultElement = document.getElementById('vehicleResult');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                resultElement.innerHTML = '<pre>Please select a file first.</pre>';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            
+            try {
+                const data = await CSVParser.loadFromFile(file);
+                const processedData = CSVParser.processVehicleData(data);
+                
+                // Save to localStorage for the configurator to use
+                localStorage.setItem('vehicleData', JSON.stringify(processedData));
+                
+                resultElement.innerHTML = `<pre>Successfully processed ${processedData.length} vehicles.\n\nSample data:\n${JSON.stringify(processedData.slice(0, 2), null, 2)}</pre>`;
+            } catch (error) {
+                resultElement.innerHTML = `<pre>Error: ${error.message}</pre>`;
+            }
+        });
+        
+        // Process wheel data
+        document.getElementById('processWheelBtn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('wheelFileInput');
+            const resultElement = document.getElementById('wheelResult');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                resultElement.innerHTML = '<pre>Please select a file first.</pre>';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            
+            try {
+                const data = await CSVParser.loadFromFile(file);
+                const processedData = CSVParser.processWheelData(data);
+                
+                // Display number of compatible vehicles for each wheel
+                processedData.forEach(wheel => {
+                    console.log(`Wheel ${wheel.brand} ${wheel.model} ${wheel.finish} is compatible with: ${wheel.compatibleVehicles.join(', ')}`);
+                });
+                
+                // Save to localStorage for the configurator to use
+                localStorage.setItem('wheelData', JSON.stringify(processedData));
+                
+                resultElement.innerHTML = `<pre>Successfully processed ${processedData.length} wheels.\n\nSample data:\n${JSON.stringify(processedData.slice(0, 1), null, 2)}</pre>`;
+            } catch (error) {
+                resultElement.innerHTML = `<pre>Error: ${error.message}</pre>`;
+            }
+        });
+        
+        // Clear vehicle data
+        document.getElementById('clearVehicleBtn').addEventListener('click', () => {
+            const resultElement = document.getElementById('vehicleResult');
+            localStorage.removeItem('vehicleData');
+            resultElement.innerHTML = '<pre>Vehicle data cleared from localStorage.</pre>';
+        });
+        
+        // Clear wheel data
+        document.getElementById('clearWheelBtn').addEventListener('click', () => {
+            const resultElement = document.getElementById('wheelResult');
+            localStorage.removeItem('wheelData');
+            resultElement.innerHTML = '<pre>Wheel data cleared from localStorage.</pre>';
+        });
+        
+        // Clear all data
+        document.getElementById('clearAllBtn').addEventListener('click', () => {
+            const resultElement = document.getElementById('configResult');
+            localStorage.clear();
+            resultElement.innerHTML = '<pre>All data cleared from localStorage.</pre>';
+        });
+        
+        // Clear last configuration
+        document.getElementById('clearConfigBtn').addEventListener('click', () => {
+            const resultElement = document.getElementById('configResult');
+            localStorage.removeItem('lastConfig');
+            resultElement.innerHTML = '<pre>Last configuration cleared from localStorage.</pre>';
+        });
+    </script>
+</body>
+</html> 
